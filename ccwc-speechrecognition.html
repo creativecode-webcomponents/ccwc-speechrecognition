@@ -1,0 +1,40 @@
+<script src="src/ccwc-speechrecognition.js"></script>
+
+<style>
+    ccwc-speechrecognition.default-style .results-text {
+        width: 50vw;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: #252519;
+        display: inline-block;
+        vertical-align: middle;
+        font-family: sans-serif;
+        font-size: x-large;
+        height: 30px;
+        margin-left: 25px;
+    }
+
+    ccwc-speechrecognition.default-style .toggle-speech {
+        background-color: white;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #9a9a9a;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+        background-image: url('images/mic.png');
+        background-repeat: no-repeat;
+        border-radius: 50px;
+        background-size: 40%;
+        background-position: center center;
+        width: 20px;
+        height: 20px;
+        padding: 15px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    ccwc-speechrecognition.default-style[listening] .toggle-speech {
+        background-image: url('images/redmic.png');
+        box-shadow: 3px 3px 5px rgba(155, 0, 0, 0.5);
+        border-color: #880000;
+    }
+</style>
