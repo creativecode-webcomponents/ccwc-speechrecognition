@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/../ccwc-slideshow/ccwc-slide.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../ccwc-slideshow/ccwc-slideshow.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../ccwc-slideshow/demo/deck/chapters/chapter1.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../ccwc-slideshow/demo/deck/chapters/chapter2.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../ccwc-slideshow/demo/deck/chapters/chapter3.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../ccwc-slideshow/demo/deck/manifest.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../ccwc-slideshow/gulpfile.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../ccwc-slideshow/package.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../ccwc-slideshow/src/ccwc-slide.es6" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../ccwc-slideshow/src/ccwc-slideshow.es6" charset="UTF-8" />
+  </component>
+</project>

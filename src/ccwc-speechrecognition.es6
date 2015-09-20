@@ -61,13 +61,13 @@ class CCWCSpeechRecognition extends HTMLElement {
         var interimTranscript = '';
         if (event.results[event.results.length-1].isFinal) {
             this.finalTranscript = event.results[event.results.length-1][0].transcript;
-            this.transcript += this.finalTranscript;
+            this.transcript += ' ' + this.finalTranscript;
         } else {
             interimTranscript = event.results[event.results.length-1][0].transcript;
         }
 
         if (this.resultsText) {
-            this.resultsText.innerText = this.transcript + interimTranscript;
+            this.resultsText.innerText = this.transcript + ' ' + interimTranscript;
         }
 
         var event = new CustomEvent('speechresult', { detail: {
@@ -105,6 +105,17 @@ class CCWCSpeechRecognition extends HTMLElement {
             words = [words];
         }
         this.commands.push( {"words": words, "command": command } );
+    };
+
+    /**
+     * clear text field
+     */
+    clearText() {
+        this.transcript = '';
+        this.finalTranscript = '';
+        if (this.resultsText) {
+            this.resultsText.innerText = '';
+        }
     };
 
     /**

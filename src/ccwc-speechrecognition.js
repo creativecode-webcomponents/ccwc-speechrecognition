@@ -86,17 +86,16 @@ var CCWCSpeechRecognition = (function (_HTMLElement) {
          * @param event
          */
         value: function onSpeechResult(event) {
-            console.log(event);
             var interimTranscript = '';
             if (event.results[event.results.length - 1].isFinal) {
                 this.finalTranscript = event.results[event.results.length - 1][0].transcript;
-                this.transcript += this.finalTranscript;
+                this.transcript += ' ' + this.finalTranscript;
             } else {
                 interimTranscript = event.results[event.results.length - 1][0].transcript;
             }
 
             if (this.resultsText) {
-                this.resultsText.innerText = this.transcript + interimTranscript;
+                this.resultsText.innerText = this.transcript + ' ' + interimTranscript;
             }
 
             var event = new CustomEvent('speechresult', { detail: {
@@ -136,6 +135,19 @@ var CCWCSpeechRecognition = (function (_HTMLElement) {
                 words = [words];
             }
             this.commands.push({ "words": words, "command": command });
+        }
+    }, {
+        key: "clearText",
+
+        /**
+         * clear text field
+         */
+        value: function clearText() {
+            this.transcript = '';
+            this.finalTranscript = '';
+            if (this.resultsText) {
+                this.resultsText.innerText = '';
+            }
         }
     }, {
         key: "clearCommands",

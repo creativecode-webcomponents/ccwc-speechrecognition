@@ -2,9 +2,26 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>Creative Code Web Component: Video Camera</title>
+    <title>Creative Code Web Component: Speech Recognition</title>
     <script src="../node_modules/webcomponents.js/webcomponents.min.js"></script>
     <link rel="import" href="../ccwc-speechrecognition.html">
+
+    <style>
+        #square {
+            width: 100px;
+            height: 100px;
+            background-color: #252519;
+            display: inline-block;
+        }
+
+        #circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 100px;
+            background-color: #252519;
+            display: inline-block;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,10 +30,56 @@
         <div class="results-text"></div>
     </ccwc-speechrecognition>
 
+    <br />
+    <br />
+    <br />
+
+    <div id="square"></div>
+    <div id="circle"></div>
+    <div>Hint: Say "Change square/circle color to" ...then say a color (red, blue, green, yellow, or black)</div>
+    <div>Hint: Say "clear the text" if things are getting too long</div>
+    <div>Hint: Say "find me a" to search google images</div>
+
     <script>
-        document.querySelector('ccwc-speechrecognition').addEventListener('speechresult', function(event) {
+        var comp = document.querySelector('ccwc-speechrecognition');
+        var colors = ["red", "blue", "yellow", "green", "black"];
+        comp.addCommand('change square color', function(event) {
+            for (var c in colors) {
+                if (event.transcript.indexOf(colors[c]) !== -1) {
+                    var sq = document.querySelector('#square').style.backgroundColor = colors[c];
+                    comp.clearText();
+                    return;
+                }
+            }
+        });
+
+        comp.addCommand('change circle color', function(event) {
+            for (var c in colors) {
+                if (event.transcript.indexOf(colors[c]) !== -1) {
+                    var sq = document.querySelector('#circle').style.backgroundColor = colors[c];
+                    comp.clearText();
+                    return;
+                }
+            }
+        });
+
+        comp.addCommand('clear the text', function(event) {
+            comp.clearText();
+        });
+
+        comp.addCommand('alert', function(event) {
+            alert(event.transcript);
+        });
+
+        comp.addCommand('find me a', function(event) {
+            var win = window.open('https://www.google.com/search?q=' + event.transcript + '&tbm=isch', '_blank');
+            win.focus();
+        });
+
+
+        /*comp.addEventListener('speechresult', function(event) {
             console.log(event);
-        })
+        });*/
     </script>
 
 </body>
