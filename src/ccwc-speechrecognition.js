@@ -86,11 +86,11 @@ var CCWCSpeechRecognition = (function (_HTMLElement) {
          * @param event
          */
         value: function onSpeechResult(event) {
+            console.log(event);
             var interimTranscript = '';
             if (event.results[event.results.length - 1].isFinal) {
                 this.finalTranscript = event.results[event.results.length - 1][0].transcript;
                 this.transcript += this.finalTranscript;
-                console.log(event.results[event.results.length - 1][0].transcript);
             } else {
                 interimTranscript = event.results[event.results.length - 1][0].transcript;
             }
