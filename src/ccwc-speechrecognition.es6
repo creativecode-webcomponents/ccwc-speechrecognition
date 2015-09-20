@@ -26,9 +26,9 @@ class CCWCSpeechRecognition extends HTMLElement {
         this.speech.start();
         this.isRunning = true;
         this.setAttribute('listening', true);
-        /*for (var cb in self._speechStartCallbacks) {
-            self._speechStartCallbacks[cb].apply(self);
-        }*/
+
+        var event = new CustomEvent('speechstart');
+        this.dispatchEvent(event);
     };
 
     /**
@@ -38,9 +38,8 @@ class CCWCSpeechRecognition extends HTMLElement {
         this.speech.stop();
         this.isRunning = false;
         this.removeAttribute('listening');
-        /*for (var cb in self._speechStopCallbacks) {
-            self._speechStopCallbacks[cb].apply(self);
-        }*/
+        var event = new CustomEvent('speechstop');
+        this.dispatchEvent(event);
     };
 
     /**
@@ -59,20 +58,24 @@ class CCWCSpeechRecognition extends HTMLElement {
      * @param event
      */
      onSpeechResult(event) {
-        if (event.results[0].isFinal) {
-            this.finalTranscript = event.results[0][0].transcript;
+        var interimTranscript = '';
+        if (event.results[event.results.length-1].isFinal) {
+            this.finalTranscript = event.results[event.results.length-1][0].transcript;
             this.transcript += this.finalTranscript;
         } else {
-            this.interimTranscript = event.results[0][0].transcript;
+            interimTranscript = event.results[event.results.length-1][0].transcript;
         }
 
         if (this.resultsText) {
-            this.resultsText.innerText = this.transcript + this.interimTranscript;
+            this.resultsText.innerText = this.transcript + interimTranscript;
         }
 
-        //for (var cb in self._speechResultsCallbacks) {
-            //self._speechResultsCallbacks[cb].apply(self, [{"final": self._finalTranscript, "interim": self._interimTranscript}] );
-        //}
+        var event = new CustomEvent('speechresult', { detail: {
+            results: this.transcript + interimTranscript,
+            final: this.finalTranscript,
+            interim: this.interimTranscript,
+            isFinal: event.results[event.results.length-1].isFinal }});
+        this.dispatchEvent(event);
 
         for (var command in this.commands) {
             for (var word in this.commands[command].words) {
@@ -116,11 +119,7 @@ class CCWCSpeechRecognition extends HTMLElement {
      * @param event
      */
     onSpeechError(event) {
-        console.log(event)
-
-        /*for (var cb in self._speechErrorCallbacks) {
-            self._speechErrorCallbacks[cb].apply(self, [event]);
-        }*/
+        this.dispatchEvent(event);
     };
 
     /**
@@ -128,15 +127,12 @@ class CCWCSpeechRecognition extends HTMLElement {
      * @param event
      */
     onSpeechEnd(event) {
-        console.log('speech end', this.keepAlive)
         if (this.keepAlive) {
             this.speech.start();
         } else {
             this.isRunning = false;
             this.removeAttribute('listening');
-            /*for (var cb in self._speechEndCallbacks) {
-                self._speechEndCallbacks[cb].apply(self, [event]);
-            }*/
+            this.dispatchEvent(event);
         }
     };
 

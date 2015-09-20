@@ -8,9 +8,16 @@
 </head>
 
 <body>
-    <ccwc-speechrecognition class="default-style" keepAlive>
+    <ccwc-speechrecognition class="default-style" onspeechresult="console.log(event);" keepAlive >
         <div class="toggle-speech"></div>
         <div class="results-text"></div>
     </ccwc-speechrecognition>
+
+    <script>
+        document.querySelector('ccwc-speechrecognition').addEventListener('speechresult', function(event) {
+            console.log(event);
+        })
+    </script>
+
 </body>
 </html>

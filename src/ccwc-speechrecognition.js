@@ -48,9 +48,9 @@ var CCWCSpeechRecognition = (function (_HTMLElement) {
             this.speech.start();
             this.isRunning = true;
             this.setAttribute('listening', true);
-            /*for (var cb in self._speechStartCallbacks) {
-                self._speechStartCallbacks[cb].apply(self);
-            }*/
+
+            var event = new CustomEvent('speechstart');
+            this.dispatchEvent(event);
         }
     }, {
         key: "stop",
@@ -62,9 +62,8 @@ var CCWCSpeechRecognition = (function (_HTMLElement) {
             this.speech.stop();
             this.isRunning = false;
             this.removeAttribute('listening');
-            /*for (var cb in self._speechStopCallbacks) {
-                self._speechStopCallbacks[cb].apply(self);
-            }*/
+            var event = new CustomEvent('speechstop');
+            this.dispatchEvent(event);
         }
     }, {
         key: "toggle",
@@ -87,20 +86,25 @@ var CCWCSpeechRecognition = (function (_HTMLElement) {
          * @param event
          */
         value: function onSpeechResult(event) {
-            if (event.results[0].isFinal) {
-                this.finalTranscript = event.results[0][0].transcript;
+            var interimTranscript = '';
+            if (event.results[event.results.length - 1].isFinal) {
+                this.finalTranscript = event.results[event.results.length - 1][0].transcript;
                 this.transcript += this.finalTranscript;
+                console.log(event.results[event.results.length - 1][0].transcript);
             } else {
-                this.interimTranscript = event.results[0][0].transcript;
+                interimTranscript = event.results[event.results.length - 1][0].transcript;
             }
 
             if (this.resultsText) {
-                this.resultsText.innerText = this.transcript + this.interimTranscript;
+                this.resultsText.innerText = this.transcript + interimTranscript;
             }
 
-            //for (var cb in self._speechResultsCallbacks) {
-            //self._speechResultsCallbacks[cb].apply(self, [{"final": self._finalTranscript, "interim": self._interimTranscript}] );
-            //}
+            var event = new CustomEvent('speechresult', { detail: {
+                    results: this.transcript + interimTranscript,
+                    final: this.finalTranscript,
+                    interim: this.interimTranscript,
+                    isFinal: event.results[event.results.length - 1].isFinal } });
+            this.dispatchEvent(event);
 
             for (var command in this.commands) {
                 for (var word in this.commands[command].words) {
@@ -150,11 +154,7 @@ var CCWCSpeechRecognition = (function (_HTMLElement) {
          * @param event
          */
         value: function onSpeechError(event) {
-            console.log(event);
-
-            /*for (var cb in self._speechErrorCallbacks) {
-                self._speechErrorCallbacks[cb].apply(self, [event]);
-            }*/
+            this.dispatchEvent(event);
         }
     }, {
         key: "onSpeechEnd",
@@ -164,15 +164,12 @@ var CCWCSpeechRecognition = (function (_HTMLElement) {
          * @param event
          */
         value: function onSpeechEnd(event) {
-            console.log('speech end', this.keepAlive);
             if (this.keepAlive) {
                 this.speech.start();
             } else {
                 this.isRunning = false;
                 this.removeAttribute('listening');
-                /*for (var cb in self._speechEndCallbacks) {
-                    self._speechEndCallbacks[cb].apply(self, [event]);
-                }*/
+                this.dispatchEvent(event);
             }
         }
     }, {
