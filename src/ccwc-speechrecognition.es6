@@ -83,13 +83,10 @@ class CCWCSpeechRecognition extends HTMLElement {
                     // cut the command leaving the freeform words
                     var w = this.commands[command].words[word];
                     var ftransIndex = this.finalTranscript.indexOf(w);
-                    var itransIndex = this.interimTranscript.indexOf(w);
-                    this.finalTranscript = this.finalTranscript.substr(0, ftransIndex) + this.finalTranscript.substr(ftransIndex + w.length, this.finalTranscript.length);
-                    this.interimTranscript = this.interimTranscript.substr(0, ftransIndex) + this.interimTranscript.substr(ftransIndex + w.length, this.interimTranscript.length);
-
+                    this.finalTranscript = this.finalTranscript.substr(0, ftransIndex) +
+                        this.finalTranscript.substr(ftransIndex + w.length, this.finalTranscript.length);
                     this.commands[command].command.apply(this, [{ "word" : w, "transcript": this.finalTranscript }]);
                     this.finalTranscript = "";
-                    this.interimTranscript = "";
                 }
             }
         }
